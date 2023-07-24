@@ -1,4 +1,4 @@
-class Invoice
+class Scheduler
 
   WORKERS = [
     {
@@ -7,9 +7,9 @@ class Invoice
       cost: 80
     },
     {
-    email: 'alice@gmail',
-    trades: ['plumbing'],
-    cost: 90
+      email: 'alice@gmail',
+      trades: ['plumbing'],
+      cost: 90
     },
     {
       email: 'ted@gmail',
@@ -46,19 +46,9 @@ class Invoice
     emails.sort { |a,b| a <=> b }
   end
 
-  attr_reader :date, :product, :cost
-  def initialize(date, product, cost)
-    @date = date
-    @product = product
-    @cost = cost
-  end
-
-  def hello
-    puts 'hello'
-  end
 end
 
-i = Invoice.new(Time.now, 'test', 30)
+i = Scheduler.new
 
 p i.schedule_workers(['cement'])
 p i.cheapest_workers_with_trade(['cement', 'plumbing'])
