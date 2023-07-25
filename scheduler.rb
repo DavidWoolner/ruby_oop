@@ -1,5 +1,6 @@
 class Scheduler
 
+  attr_accessor :workers_with_trade
   WORKERS = [
     {
       email: 'bob@gmail',
@@ -12,7 +13,7 @@ class Scheduler
       cost: 90
     },
     {
-      email: 'ted@gmail',
+      email: 'Ted@gmail',
       trades: %w[cement bricklaying],
       cost: 75
     }
@@ -32,8 +33,10 @@ class Scheduler
     workers.min { |a,b| a[:cost] <=> b[:cost] }
   end
 
-  def schedule_workers(trades)
-    worker_emails = trades.map { |trade| {"#{trade}" => get_emails( workers_with_trade(trade) )} }
+  def schedule_workers(trade)
+    #takes trade and returns a array of SORTEd worker emails with the trade
+    workers_for_trade = workers_with_trade(trade)
+    worker_emails = get_emails(workers_for_trade)
     sort_emails(worker_emails)
   end
 
@@ -43,14 +46,15 @@ class Scheduler
   end
 
   def sort_emails(emails)
-    emails.sort { |a,b| a <=> b }
+    # emails.sort { |a,b| a.downcase <=> b.downcase }
+    emails.sort_by(&:downcase)
   end
 
 end
 
 i = Scheduler.new
 
-p i.schedule_workers(['cement'])
+p i.schedule_workers('cement')
 p i.cheapest_workers_with_trade(['cement', 'plumbing'])
 
 
